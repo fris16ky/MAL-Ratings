@@ -21,7 +21,7 @@ driver = webdriver.Chrome()
 #Navigate to my MyAnimeList page
 driver.get("https://myanimelist.net/animelist/Fris16ky")
 
-anime_names = []
+anime_list = []
 anime_ratings = [] #Could maybe use a dict instead? Like I did for the college project
 
 #Wait 10 seconds for the page to load
@@ -45,7 +45,7 @@ for tbody in tbody_elements:
             anchor_tag = td_title.find("a")
             if anchor_tag:
                 anime_name = anchor_tag.text.strip()
-                anime_names.append({"Name": anchor_tag.text, "Rating": ""})
+                anime_list.append({"Name": anchor_tag.text, "Rating": ""})
     
     #Find all ratings, still using tr_element (also under list-table-data)
     if tr_element: 
@@ -55,12 +55,143 @@ for tbody in tbody_elements:
             if anc_tag: 
                 score = anc_tag.find("span")
                 rating = score.text.strip()
-                for anime in anime_names: 
+                for anime in anime_list: 
                     if anime["Name"] == anime_name: 
                         anime["Rating"] = rating
-        
-print(anime_names)
+
+#Sort anime list by rating: 
+sorted_anime_list = sorted(anime_list, key=lambda x: int(x["Rating"])  if x["Rating"].isdigit() else (0 if x["Rating"] == "-" else -1))
+
+# print(sorted_anime_list)
 #Works!
+
+print("Here are all of my currently unrated anime: ", end="") #end is so that it doesn't print each name on a new line
+unrated_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "-":
+        if unrated_anime_count > 0: #runs before the printing so that for the last name it won't print a comma after. Won't print a comma before the first name either since count = 0
+            print(", ", end="")
+        print(anime["Name"], end="")
+        unrated_anime_count += 1
+print("." if unrated_anime_count > 0 else "") #Printing this out last to add a period after the last anime. 
+
+print()
+print("1/10 Animes: ", end="")
+one_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "1": #one is the lowest rating
+        if one_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        one_anime_count += 1
+print("." if one_anime_count > 0 else "I do not have any thankfully!")  
+
+print()
+print("2/10 Animes: ", end="")
+two_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "2":
+        if two_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        two_anime_count += 1    
+print("." if two_anime_count > 0 else "I do not have any thankfully!") 
+
+print()
+print("3/10 Animes: ", end="")
+three_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "3":
+        if three_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        three_anime_count += 1
+print("." if three_anime_count > 0 else "I do not have any thankfully!") 
+
+print()
+print("4/10 Animes: ", end="")
+four_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "4":
+        if four_anime_count > 0:
+            print(", ", end="")
+        print(anime["Name"], end="")
+        four_anime_count += 1
+print("." if four_anime_count > 0 else "I do not have any thankfully!") 
+
+print()
+print("5/10 Animes: ", end="")
+five_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "5":
+        if five_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        five_anime_count += 1
+print("." if five_anime_count > 0 else "I do not have any thankfully!") 
+
+print()
+print("6/10 Animes: ", end="")
+six_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "6":
+        if six_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        six_anime_count += 1
+print("." if six_anime_count > 0 else "I do not have any thankfully!") #last else here, since I definitely have animes rated 7-10. 
+
+print()
+print("7/10 Animes: ", end="")
+seven_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "7":
+        if seven_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        seven_anime_count += 1
+print("." if seven_anime_count > 0 else "")  
+
+print()
+print("8/10 Animes: ", end="")
+eight_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "8":
+        if eight_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        eight_anime_count += 1
+print("." if eight_anime_count > 0 else "") 
+
+print()
+print("9/10 Animes: ", end="")
+nine_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "9":
+        if nine_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        nine_anime_count += 1
+print("." if nine_anime_count > 0 else "") 
+
+print()
+print("10/10 PEAK Animes: ", end="")
+ten_anime_count = 0
+for anime in sorted_anime_list: 
+    if anime["Rating"] == "10":
+        if ten_anime_count > 0: 
+            print(", ", end="")
+        print(anime["Name"], end="")
+        ten_anime_count += 1
+print("." if ten_anime_count > 0 else "") 
+
+
+
+# for anime in anime_list: 
+#     #sort by rating
+#     if anime["Rating"] == "-": 
+#         #haven't rated yet
+#         print()
 
 
 
