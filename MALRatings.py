@@ -16,6 +16,11 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+import unicodedata #To deal with accented characters like é and à
+
+def normalize_string(s):
+    return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
+
 #Create a new instance of the Chrome driver
 driver = webdriver.Chrome()
 #Navigate to my MyAnimeList page
@@ -62,12 +67,19 @@ for tbody in tbody_elements:
 #Sort anime list by rating: 
 sorted_anime_list = sorted(anime_list, key=lambda x: int(x["Rating"])  if x["Rating"].isdigit() else (0 if x["Rating"] == "-" else -1))
 
-# print(sorted_anime_list)
-#Works!
+
+#READ THIS
+#Test code again (look through output), then clean code/comments, push, write more comments, push. 
+
+
 
 print("Here are all of my currently unrated anime: ", end="") #end is so that it doesn't print each name on a new line
 unrated_anime_count = 0
 for anime in sorted_anime_list: 
+    #Normalize/replace non ASCII characters, (Pok�mon -> Pokmon), and then manually replacing Pokmon with Pokemon (accents not working, but that's fine!)
+    normalized_name = normalize_string(anime["Name"])
+    anime["Name"] = normalized_name.replace("Pokmon", "Pokémon").replace("Dj", "Déjà")
+        
     if anime["Rating"] == "-":
         if unrated_anime_count > 0: #runs before the printing so that for the last name it won't print a comma after. Won't print a comma before the first name either since count = 0
             print(", ", end="")
